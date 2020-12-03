@@ -31,6 +31,21 @@
 # Explanation : 6+3+7=16 is the maximum value that can spanned.
 
 #==============Solution==============================
+
+# Commentary:
+# Basically, there are 2 kinds of paths: a "closed one" and an open one.
+# A closed path includes the node and both left and right subpaths, 
+# but not any parent nodes
+# An open path includes the node and either the left or the right subpath, and 
+# can include the parent node
+# We also need to consider the cases where we don't include either the right
+# nor the left paths, and consider only the node.
+# The node can be both a closed and an open path. Here are our cases:
+# 1) A "closed path" (include node, left and right trees)
+# 2) A "closed path" with only the node
+# 3) An "open path", which includes either L or R + node
+# 4) An "open path" with only the node
+
 class Node:
 	def __init__(self, val):
 		self.left = None
@@ -40,18 +55,20 @@ class Node:
 class MaxPathFinder:
 	def __init__(self):
 		self.maxClosed = 0
-	def getMaxPath(self, node):
+	def _getMaxPath(self, node):
 		if not node:
 			return 0
 		left = self._getMaxPath(node.left)
 		right = self._getMaxPath(node.right)
-		self.maxClosed = max(self.maxClosed, left + right + node.val)
-		return max(left, right) + node.val
+		# update max closed path variable
+		self.maxClosed = max(self.maxClosed, left + right + node.val, node.val) # notice how node is both in closed and open path terms
+		# return max open path
+		return max(node.val, max(left, right) + node.val)
 	def getMaxPath(self, node):
 		self.maxClosed = 0
 		return max(self._getMaxPath(node), self.maxClosed)
 
-
+#================Tests===================
 pathFinder = MaxPathFinder()
 head = Node(-100)
 
@@ -78,4 +95,13 @@ xhead.left.left = Node(4)
 xhead.left.right = Node(5)
 xhead.right.left = Node(6)
 xhead.right.right = Node(7)
+print('max path', pathFinder.getMaxPath(xhead))
+
+xhead = Node(1)
+xhead.left = Node(-2)
+xhead.right = Node(-3)
+xhead.left.left = Node(-4)
+xhead.left.right = Node(-5)
+xhead.right.left = Node(6)
+xhead.right.right = Node(-7)
 print('max path', pathFinder.getMaxPath(xhead))

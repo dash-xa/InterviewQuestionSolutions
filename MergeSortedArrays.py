@@ -38,6 +38,7 @@ def merge_sorted_arrays(small_arr, dest_arr):
 			dest_arr[n] = big_arr[b]
 			b += 1
 
+#=================Tests====================
 N = [5, 9, 15, 20, None, None, None, None, None, None]
 M = [1, 3, 6, 8, 19, 35]
 
