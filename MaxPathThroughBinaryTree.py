@@ -9,6 +9,7 @@
 # Hint : Refer this article.
 
 # Q2. Given a binary tree with integer values, find the sub-path with the maximum value in it
+# Each path must include at least one node
 
    
 # Example : 
@@ -30,21 +31,32 @@
 # Output : Max path is 6, 3, 7
 # Explanation : 6+3+7=16 is the maximum value that can spanned.
 
+# Questions:
+# 1) Can nodes have value None?
+# 2) Can tree be empty?
+# 3) Can nodes with None value have children?
+
 #==============Solution==============================
 
 # Commentary:
 # Basically, there are 2 kinds of paths: a "closed one" and an open one.
-# A closed path includes the node and both left and right subpaths, 
-# but not any parent nodes
-# An open path includes the node and either the left or the right subpath, and 
-# can include the parent node
-# We also need to consider the cases where we don't include either the right
-# nor the left paths, and consider only the node.
-# The node can be both a closed and an open path. Here are our cases:
-# 1) A "closed path" (include node, left and right trees)
-# 2) A "closed path" with only the node
-# 3) An "open path", which includes either L or R + node
-# 4) An "open path" with only the node
+
+# A closed path is one of: 
+# 1) left path + node
+# 2) right path + node
+# 3) left path + right path + node
+# 4) node
+# Each time we make sure the best existing closed path is >= both these options
+
+# An open path is one of:
+# 1) Left path + node
+# 2) right path + node
+# 3) node
+# 4) nothing (value of 0)
+# For returning the best open path, we just take the max of these values
+
+# We construct a method which writes the best closed path to the self.maxClosed field,
+# and returns the best open path
 
 class Node:
 	def __init__(self, val):
@@ -54,54 +66,47 @@ class Node:
 #Q4
 class MaxPathFinder:
 	def __init__(self):
-		self.maxClosed = 0
+		self.maxClosed = -float('inf')
+
 	def _getMaxPath(self, node):
-		if not node:
-			return 0
-		left = self._getMaxPath(node.left)
-		right = self._getMaxPath(node.right)
+		# Dealing with null value node. 
+		# If node has null value then open path no longer an option
+		if node.val is None:
+			if node.left:
+				self._getMaxPath(node.left)
+			if node.right:
+				self._getMaxPath(node.right)
+			return -float('inf')
+
+		left = 0 if node.left is None else self._getMaxPath(node.left)
+		right = 0 if node.right is None else self._getMaxPath(node.right)
+
 		# update max closed path variable
-		self.maxClosed = max(self.maxClosed, left + right + node.val, node.val) # notice how node is both in closed and open path terms
+		self.maxClosed = max(self.maxClosed, node.val, max(left, right) + node.val, left + right + node.val)
+
 		# return max open path
-		return max(node.val, max(left, right) + node.val)
+		maxOpenPath = max(node.val, max(left, right) + node.val)
+		return maxOpenPath
+
 	def getMaxPath(self, node):
-		self.maxClosed = 0
-		return max(self._getMaxPath(node), self.maxClosed)
+		self.maxClosed = -float('inf')
+		self._getMaxPath(node)
+		return self.maxClosed
 
 #================Tests===================
 pathFinder = MaxPathFinder()
-head = Node(-100)
+head = Node(-1)
+head.right = Node(9)
+head.right.left = Node(-6)
+head.right.right = Node(3)
+head.right.right.right = Node(-2)
+print('max path is', pathFinder.getMaxPath(head))
 
-n2 = Node(2)
-head.left = n2
-n4 = Node(4)
-n2.left = n4
-n5 = Node(5)
-n2.right = n5
-n3 = Node(3)
+h = Node(1)
+h.left = Node(2)
+h.right = Node(3)
+print('max path is', pathFinder.getMaxPath(h))
 
-head.right = n3
-n6 = Node(6)
-n3.left = n6
-n7 = Node(7)
-n3.right = n7
-
-print(pathFinder.getMaxPath(head))
-
-xhead = Node(1)
-xhead.left = Node(2)
-xhead.right = Node(3)
-xhead.left.left = Node(4)
-xhead.left.right = Node(5)
-xhead.right.left = Node(6)
-xhead.right.right = Node(7)
-print('max path', pathFinder.getMaxPath(xhead))
-
-xhead = Node(1)
-xhead.left = Node(-2)
-xhead.right = Node(-3)
-xhead.left.left = Node(-4)
-xhead.left.right = Node(-5)
-xhead.right.left = Node(6)
-xhead.right.right = Node(-7)
-print('max path', pathFinder.getMaxPath(xhead))
+d = Node(None)
+d.right = Node(5)
+print('max path is', pathFinder.getMaxPath(d))
