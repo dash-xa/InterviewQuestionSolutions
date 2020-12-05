@@ -1,3 +1,34 @@
+# There are 2 variants of this problem. One requires you to modify the array in place, and the other doesn't. Here's the one that does:
+
+# Solution has been tested on LeetCode
+# Time complexity: O(n + m). Only linear traversals
+# Space Complexity: O(n + m)
+class Solution:
+    def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+        m = len(nums2)
+        n = len(nums1) - m
+        arr1 = nums1[:n]
+        arr2 = nums2
+        p1 = 0
+        p2 = 0
+        while not ((p1 == n) and (p2 == m)):
+            current = p1 + p2
+            if p1 == n: # copy from arr2
+                nums1[current] = arr2[p2]
+                p2 += 1
+            elif p2 == m: # copy from arr1
+                nums1[current] = arr1[p1]
+                p1 += 1
+            elif arr2[p2] < arr1[p1]:
+                nums1[current] = arr2[p2]
+                p2 += 1
+            else:
+                nums1[current] = arr1[p1]
+                p1 += 1
+
+
+
+# Here's the solution that doesn't require in place modification:
 #Q1. There are 2 arrays. Smaller is of size m and has m elements in sorted order. The bigger array is
 # of size m+n, where there are only n elements in initial n positions in sorted order. So, last m
 # positions are empty in the bigger array. Insert smaller array’s m elements in m + n array has all numbers in sorted order.
