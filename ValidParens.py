@@ -14,3 +14,7 @@ class Solution:
                 if case1 or case2 or case3:
                     return False
         return not bool(counts)
+
+d = {}
+d[(1,1)] = 7
+print(set([1]))
