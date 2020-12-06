@@ -10,6 +10,7 @@ Each file contains a problem description, as well as my solution followed by a t
 - If you get stuck, draw pictures of examples! Can't stress how important this is
 - Deal with edge cases (check for null values) at the start of the method
 - Tip: When making recursive calls, always make sure you make them with the right parameters!! Avoid stack overflow infinite recursion
+- Don't talk too much. Be concise
 
 ### Binary Trees
 - Goto algorithms: Inorder traversal, bfs, dfs
