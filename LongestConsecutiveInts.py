@@ -3,17 +3,17 @@
 # Follow up: Could you implement the O(n) solution? 
 
 # Solution, O(n):
-# This shit took me so long
+# question: Can I modify the array?
 class Solution:
     def longestConsecutive(self, A):
-        L = 0
         S = set(A)
-        for x in S:
-            if x - 1 in S: continue
-            l = 0
-            while x in S:
-                l += 1
-                x += 1
-            L = max(L, l)
-        return L
+        maxLength = 0
+        for n in S:
+            if n - 1 not in S:
+                length = 0
+                while n in S:
+                    length += 1
+                    n += 1
+                maxLength = max(maxLength, length)
+        return maxLength
         
