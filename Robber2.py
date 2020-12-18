@@ -1,3 +1,4 @@
+from heapq import heappush, heappop, heapify
 class Solution:
     def canJump(self, nums):
         N = len(nums)
