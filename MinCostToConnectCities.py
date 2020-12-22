@@ -1,4 +1,3 @@
-
 def connected(union, a, b):
     return union[a] == union[b]
 def connect(union, a, b):
@@ -31,4 +30,5 @@ def minCost(N, edges, newEdges):
 n = 6
 edges = [[1, 4], [4, 5], [2, 3]]
 newEdges = [[1, 2, 5], [1, 3, 10], [1, 6, 2], [5, 6, 5]]
-print(minCost(n, edges, newEdges))
+# print(minCost(n, edges, newEdges))
+print(list(''))
