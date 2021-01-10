@@ -25,25 +25,26 @@
 # Easy recursion
 
 class Solution:
-    def letterCombinations(self, digits: str) -> List[str]:
-        letters = {
-            '2': 'abc',
-            '3': 'def',
-            '4': 'ghi',
-            '5': 'jkl',
-            '6': 'mno',
-            '7': 'pqrs',
-            '8': 'tuv',
-            '9': 'wxyz'
-        }
-        
-        if len(digits) == 0:
-            return []
-        if len(digits) == 1:
-            return self.getLetters(digits[0])
-        combinations = []
-        possibilities = self.letterCombinations(digits[1:])
-        for letter in self.getLetters(digits[0]):
-            for combo in possibilities:
-                combinations.append(letter + combo)
-        return combinations
+    def letterCombinations(self, digits: str):
+        letters = {'2': ['a', 'b', 'c'],
+        '3': ['d', 'e', 'f'],
+        '4': ['g', 'h', 'i'],
+        '5': ['j', 'k', 'l'],
+        '6': ['m', 'n', 'o'],
+        '7': ['p', 'q', 'r', 's'],
+        '8': ['t', 'u', 'v'],
+        '9': ['w', 'x', 'y', 'z']}
+
+        def visit(path, digits):
+            if len(digits) == 0:
+                q.append(path)
+                return
+            for l in letters[digits[0]]:
+                visit(path + l, digits[1:])
+
+        q = []
+        if digits:
+            visit('', digits)
+        return q
+sol = Solution()
+print(sol.letterCombinations("23"))
