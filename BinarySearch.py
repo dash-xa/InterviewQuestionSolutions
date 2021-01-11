@@ -2,15 +2,29 @@
 
 # Solution:
 # Easy peasy. Just remember to set lo = mid + 1. 
-# You can remember this by the fact that mid always rounds down (bias towards lower)
-# So to keep it even lo has to go up (bias towards higher). This avoids infinite loops
 class Solution:
-    def search(self, nums: List[int], target: int) -> int:
-        lo = 0
-        hi = len(nums) - 1
-        while lo < hi:
+    def searchIterative(self, nums: List[int], target: int) -> int:
+        N = len(nums)
+        lo, hi = 0, N - 1
+        while lo <= hi:
             mid = (lo + hi) // 2
-            if nums[mid] < target: lo = mid + 1
-            elif nums[mid] > target: hi = mid
-            else: return mid
-        return lo if nums[lo] == target else -1
+            if nums[mid] < target:
+                lo = mid + 1
+            elif nums[mid] > target:
+                hi = mid - 1
+            else:
+                return mid
+        return -1
+    def searchRecursiveWay(self, nums, target):
+        def searchRecursive(lo, hi):
+            if lo > hi:
+                return -1
+            mid = (lo + hi) // 2
+            m = nums[mid]
+            if m < target:
+                return searchRecursive(mid + 1, hi)
+            elif m > target:
+                return searchRecursive(lo, mid - 1)
+            return mid
+        N = len(nums)
+        return searchRecursive(0, N - 1)
