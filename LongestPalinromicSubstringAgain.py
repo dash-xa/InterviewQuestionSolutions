@@ -46,7 +46,7 @@ class Solution:
         N = len(s)
         memo = [[''] * N for i in range(N)]
         ans = f(s, 0, N - 1)
-        print(memo)
+        # print(memo)
         return ans
         
         

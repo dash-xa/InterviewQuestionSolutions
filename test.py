@@ -57,3 +57,8 @@ class Solution:
 sol = Solution()
 test = [1, 2]
 print(sol.permute(test))
+if test[0] == 1:
+    zzz = 3
+else:
+    zzz = 4
+print(zzz)
